@@ -1,9 +1,9 @@
-package pieces;
+package com.pieces;
 
-import Board;
-import Cell;
-import GamePiece;
-import PiecesName;
+import com.Board;
+import com.Cell;
+import com.GamePiece;
+import com.PiecesName;
 
 public class King extends GamePiece {
     // Initialize color() as well as its name

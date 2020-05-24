@@ -1,3 +1,5 @@
+package com;
+
 public enum PiecesName {
     KING,
     QUEEN,

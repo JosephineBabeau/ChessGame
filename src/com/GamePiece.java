@@ -1,3 +1,5 @@
+package com;
+
 public abstract class GamePiece {
     protected PiecesName name;
     protected boolean color;

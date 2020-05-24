@@ -1,4 +1,4 @@
-package pieces;
+package com.pieces;
 
 public class Rook {
 }

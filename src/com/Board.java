@@ -1,3 +1,5 @@
+package com;
+
 public class Board {
     GamePiece[][] board = new GamePiece[8][8];
 
