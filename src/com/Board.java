@@ -10,6 +10,7 @@ public class Board {
     public boolean isEmpty(Cell cell){
         return board[cell.getRow()][cell.getCol()] == null;
     }
+
     public boolean isCellValid(Cell cell){
 
         if(cell.getRow() < 0) return false;
@@ -18,5 +19,12 @@ public class Board {
         if(cell.getCol() >= board[0].length) return false;
 
         return true;
+    }
+
+    public int getRowSize() {
+        return board.length;
+    }
+    public int getColSize() {
+        return board[0].length;
     }
 }

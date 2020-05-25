@@ -1,20 +1,23 @@
 package com;
+import com.Constants;
 
 public abstract class GamePiece {
-    protected PiecesName name;
-    protected boolean color;
+    protected Constants.GamePieceName name;
+    protected Constants.Color color;
 
-    public GamePiece(boolean color, PiecesName name){
+    public GamePiece(Constants.Color color, Constants.GamePieceName name){
         this.color = color;
         this.name = name;
     }
 
-    public PiecesName getName(){
+    public Constants.GamePieceName getName(){
+
         return name;
     }
     public abstract boolean canMoveToDest(Board board, Cell start, Cell end);
 
-    public boolean color() {
+    public Constants.Color getColor() {
+
         return color;
     }
 

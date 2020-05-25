@@ -3,11 +3,11 @@ package com.pieces;
 import com.Board;
 import com.Cell;
 import com.GamePiece;
-import com.PiecesName;
+import com.Constants;
 
 public class Queen extends GamePiece {
-    public Queen(boolean color){
-        super(color, PiecesName.QUEEN);
+    public Queen(Constants.Color color){
+        super(color, Constants.GamePieceName.QUEEN);
     }
 
     @Override

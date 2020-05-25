@@ -3,12 +3,12 @@ package com.pieces;
 import com.Board;
 import com.Cell;
 import com.GamePiece;
-import com.PiecesName;
+import com.Constants;
 
 public class Rook extends GamePiece {
 
-    public Rook(boolean color){
-        super(color, PiecesName.ROOK);
+    public Rook(Constants.Color color){
+        super(color, Constants.GamePieceName.ROOK);
     }
 
     @Override

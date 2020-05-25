@@ -2,14 +2,14 @@ package com.pieces;
 import com.Board;
 import com.Cell;
 import com.GamePiece;
-import com.PiecesName;
+import com.Constants;
 
 public class Pawn extends GamePiece {
     boolean hasMoved = false;
 
-    public Pawn(boolean color){
+    public Pawn(Constants.Color color){
 
-        super(color, PiecesName.PAWN);
+        super(color, Constants.GamePieceName.PAWN);
     }
 
     @Override
@@ -21,10 +21,20 @@ public class Pawn extends GamePiece {
         int r = end.getRow();
         int c = end.getCol();
 
-        if(Math.abs(j - c) > 1) return false;
-        if(Math.abs(i - r) > 1) return false;
+        if(color == Constants.Color.WHITE) {
+            if((c == j) && (r == i + 1)) return true;
+            if((c == j) && (r == i + 2) && (start.getRow() == 1)) return true;
+            if((c == j + 1) && (r == i + 1) && (board.getPiece(end).getColor() != color)) return true;
+            if((c == j - 1) && (r == i + 1) && (board.getPiece(end).getColor() != color)) return true;
 
-        return true;
+        } else {
+            if((c == j) && (r == i - 1)) return true;
+            if((c == j) && (r == i - 2) && (start.getRow() == 6)) return true;
+            if((c == j + 1) && (r == i - 1) && (board.getPiece(end).getColor() != color)) return true;
+            if((c == j - 1) && (r == i - 1) && (board.getPiece(end).getColor() != color)) return true;
+        }
+
+        return false;
     }
 
 

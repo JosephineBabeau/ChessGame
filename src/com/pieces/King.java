@@ -3,13 +3,13 @@ package com.pieces;
 import com.Board;
 import com.Cell;
 import com.GamePiece;
-import com.PiecesName;
+import com.Constants;
 
 public class King extends GamePiece {
     // Initialize color() as well as its name
 
-    public King(boolean color){
-        super(color, PiecesName.KING);
+    public King(Constants.Color color){
+        super(color, Constants.GamePieceName.KING);
     }
 
     @Override
