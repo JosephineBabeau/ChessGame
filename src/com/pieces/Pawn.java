@@ -21,6 +21,11 @@ public class Pawn extends GamePiece {
         int r = end.getRow();
         int c = end.getCol();
 
+        // Player color defines the position of the chess pieces on the board.
+        // below describes the rules for a Pawn:
+        // 1) it can only move forward by 1 row;
+        // 2) a pawn can move by 2 rows only if it is on his starting row;
+        // 3) a pawn can move in diagonal (moving forward) only
         if(color == Constants.Color.WHITE) {
             if((c == j) && (r == i + 1)) return true;
             if((c == j) && (r == i + 2) && (start.getRow() == 1)) return true;
