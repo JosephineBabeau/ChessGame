@@ -13,6 +13,8 @@ public class King extends GamePiece {
     }
 
     @Override
+
+    // King can move in all directions, by a single square
     public boolean canMoveToDest(Board board, Cell start, Cell end) {
 
         int j = start.getCol();
@@ -22,9 +24,7 @@ public class King extends GamePiece {
         int c = end.getCol();
 
         if(Math.abs(j - c) > 1) return false;
-        if(Math.abs(i - r) > 1) return false;
-
-        return true;
+        return Math.abs(i - r) <= 1;
     }
 
 }

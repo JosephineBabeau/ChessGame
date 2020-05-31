@@ -22,6 +22,21 @@ public class Cell {
         return col;
     }
 
+    public boolean isEqual(Cell cell)
+    {
+        if(cell.getRow() != this.row)
+        {
+            return false;
+        }
+
+        if(cell.getCol() != this.col)
+        {
+            return false;
+        }
+
+        return true;
+    }
+
     public void set(int i, int j)
     {
         row = i;

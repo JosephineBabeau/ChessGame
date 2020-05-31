@@ -20,8 +20,6 @@ public class Bishop extends GamePiece{
         int c = end.getCol();
 
         // Bishop can move diagonally
-        if(Math.abs(j - c) != Math.abs(i - r)) return false;
-
-        return true;
+        return Math.abs(j - c) == Math.abs(i - r);
     }
 }

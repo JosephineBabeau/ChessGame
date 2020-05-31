@@ -20,8 +20,12 @@ public class Knight extends GamePiece {
         int c = end.getCol();
 
         // Knight has a max of 8 possible moves
-        if((Math.abs(j - c)) + (Math.abs(i - r)) != 3) return false;
-
-        return true;
+        if((Math.abs(j - c)) + (Math.abs(i - r)) == 3){
+            if((Math.abs(j - c) <= 2)
+                    && (Math.abs(i - r)) <= 2) {
+                return true;
+            }
+        }
+        return false;
     }
 }

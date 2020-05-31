@@ -20,12 +20,18 @@ public class Queen extends GamePiece {
         int c = end.getCol();
 
         // Queen can move diagonally
-        if(Math.abs(j - c) == Math.abs(i - r)) return true;
+        if(Math.abs(j - c) == Math.abs(i - r)){
+            return true;
+        }
 
         // Queen can move in straight line
-        if(Math.abs(i - r) == 0) return true;
-        if(Math.abs(j - c) == 0) return true;
+        if(Math.abs(i - r) == 0){
+            return true;
+        }
 
+        if(Math.abs(j - c) == 0){
+            return true;
+        }
         return false;
     }
 }
