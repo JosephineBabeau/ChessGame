@@ -1,194 +1,97 @@
 package com;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
+
+import com.pieces.*;
+import static com.Constants.MakeMoveStatuses.*;
+import static com.Constants.PlayerStatus.*;
 
 public class RuleEngine {
+    public MoveChecker moveChecker;
 
-    /*makeMove
-        - validates that a cell contains a piece
-        - verifies if the king is in check
+    public RuleEngine(MoveChecker moveChecker) {
+        this.moveChecker = moveChecker;
+    }
 
-        - removes pieces and put it in prison
+    public MakeMoveResults canPlayerMakeMove(Board board, Cell start, Cell end, Constants.Color playerColor) {
 
-     */
+        MakeMoveResults results = new MakeMoveResults();
 
-    public boolean makeMove(Board board, Cell start, Cell end, Constants.Color playerColor) {
         // validate if cells are within boundaries of the board
-        if(! board.isCellValid(start)) return false;
-        if(! board.isCellValid(end)) return false;
+        if(! board.isCellValid(start)) {
+            results.setMakeMoveStatuses(OUT_OF_BOUND);
+            return results;
+        }
+        if(! board.isCellValid(end)) {
+            results.setMakeMoveStatuses(OUT_OF_BOUND);
+            return results;
+        }
 
-        // a piece must be selected to initiate a move
-        if(board.isEmpty(start)) return false;
+        // select a piece to initiate a move
+        if(board.isEmpty(start)) {
+            results.setMakeMoveStatuses(NO_PIECE_SELECTED);
+            return results;
+        }
 
-        // a player must select their own pieces
+        // verify that the player selects their own pieces
         GamePiece pieceAtStart = board.getPiece(start);
-        if(pieceAtStart.getColor() != playerColor) return false;
-
+        if(pieceAtStart.getColor() != playerColor)  {
+            results.setMakeMoveStatuses(CANT_MOVE_OPPONENT_PIECE);
+            return results;
+        }
         // a player can't attack its own pieces.
         // Piece at end destination should not be of the same color
         GamePiece pieceAtEnd = board.getPiece(end);
-        if(pieceAtEnd.getColor() == playerColor) return false;
+        if(pieceAtEnd.getColor() == playerColor)  {
+            results.setMakeMoveStatuses(CANNOT_ATTACK_OWN_PIECES);
+            return results;
+        }
 
         // check authorized move for the chess piece in the start cell
-        if(!pieceAtStart.canMoveToDest(board, start, end)) return false;
-
+        if(!pieceAtStart.canMoveToDest(board, start, end)) {
+            results.setMakeMoveStatuses(UNAUTHORIZED_MOVE);
+            return results;
+        }
         //Execute move
         board.setPiece(end, pieceAtStart);
         board.setPiece(start, null);
-        //is move putting player in check
-        if(isPlayerInCheck(board, playerColor, start, end))
+
+        Constants.PlayerStatus playerStatus = moveChecker.isPlayerInCheck(board, playerColor);
+        results.setPlayerStatus(playerStatus);
+        //Verify if the move is putting the player in check
+        if(((playerStatus == BLACK_PLAYER_IN_CHECK)&&(playerColor == Constants.Color.BLACK))||
+                ((playerStatus == WHITE_PLAYER_IN_CHECK)&&(playerColor == Constants.Color.WHITE)))
         {
-            //backtrack
+            //if the move sets the player in check, perform a backtrack
             board.setPiece(end, pieceAtEnd);
             board.setPiece(start, pieceAtStart);
-            return false;
+            results.setMakeMoveStatuses(YOU_ARE_IN_CHECK);
+            return results;
         }
-
-        //Is opposite king in check
-
-        return true;
+        results.setMakeMoveStatuses(MOVE_IS_VALID);
+        return results;
     }
+    public void setUpBoard(Board board) {
 
-    private boolean isPlayerInCheck(Board board, Constants.Color playerColor, Cell start, Cell end)
-    {
-        GamePiece pieceAtStart = board.getPiece(start);
-        GamePiece pieceAtEnd = board.getPiece(end);
+        Constants.Color[] piecesColor = new Constants.Color[2];
+        piecesColor[0] = Constants.Color.WHITE;
+        piecesColor[1] = Constants.Color.BLACK;
 
-        // get the kings, to verify if a player is in 'check' state
-        Cell kingWhite = new Cell();
-        Cell kingBlack = new Cell();
-        getKings(board, kingWhite, kingBlack);
+        for(Constants.Color color : piecesColor) {
+            int row = color == Constants.Color.WHITE ? 0 : 7;
+            board.setPiece(new Cell(row,0), new Rook(color));
+            board.setPiece(new Cell(row,1), new Knight(color));
+            board.setPiece(new Cell(row,2), new Bishop(color));
+            board.setPiece(new Cell(row,3), new Queen(color));
+            board.setPiece(new Cell(row,4), new King(color));
+            board.setPiece(new Cell(row,5), new Bishop(color));
+            board.setPiece(new Cell(row,6), new Knight(color));
+            board.setPiece(new Cell(row,7), new Rook(color));
 
-        LinkedList<Cell> attackingBlackKing;
-        LinkedList<Cell> attackingWhiteKing;
-        attackingBlackKing = isCheck(board, kingBlack);
-        attackingWhiteKing = isCheck(board, kingWhite);
-
-        // backtrack if, after the move, the player is still in 'check' status
-        if((playerColor == Constants.Color.BLACK) && (!attackingBlackKing.isEmpty())) {
-            board.setPiece(end, pieceAtEnd);
-            board.setPiece(start, pieceAtStart);
-            return false;
-        } else if((playerColor == Constants.Color.WHITE) && (!attackingWhiteKing.isEmpty())) {
-            board.setPiece(end, pieceAtEnd);
-            board.setPiece(start, pieceAtStart);
-            return false;
-        }
-
-        return true;
-    }
-
-    // helper function to get position of both kings (to populate "pos")
-    private void getKings(Board board, Cell kingWhite, Cell kingBlack) {
-        LinkedList<Cell> kingList;
-        kingList = board.getPiecesByType(Constants.GamePieceName.KING);
-
-        Cell tmpkingWhite = kingList.removeFirst();
-        Cell tmpkingBlack = kingList.removeFirst();
-
-        if(board.getPiece(tmpkingBlack).getColor() == Constants.Color.WHITE){
-            Cell temp = tmpkingWhite;
-            tmpkingWhite = tmpkingBlack;
-            tmpkingBlack = temp;
-        }
-
-        kingWhite.copy(tmpkingWhite);
-        kingBlack.copy(tmpkingBlack);
-    }
-
-
-    private LinkedList<Cell> isCheck(Board board, Cell pos) {
-        // This function verifies if the King is in check.
-        // pos: position of a King on the board
-
-        LinkedList<Cell> attackingPieces = new LinkedList<>();
-        Constants.Color color = board.getPiece(pos).getColor();
-
-        // Verify diagonals for enemy pieces
-        int[][] moveDiag = new int[][]{{1,1},{-1,1},{1,-1},{-1,-1}};
-        int[][] moveLine = new int[][]{{0,1},{0,-1},{1,0},{-1,0}};
-
-        // 'isCheckForLinesAndDiag' verifies is there are any threats on lines and/or diagonals,
-        // that could attack the king (i.e. is the king in check).
-        isCheckForLinesAndDiag(board, pos, color, attackingPieces, moveDiag, true);
-        isCheckForLinesAndDiag(board, pos, color, attackingPieces, moveLine, false);
-
-        // Verify diagonals for pawn
-        int i = pos.getRow();
-        int j = pos.getCol();
-
-        GamePiece piece;
-
-        // Verify if diag move is permitted for a pawn
-        Cell diagLeft;
-        Cell diagRight;
-        if(color == Constants.Color.WHITE) {
-            diagLeft = new Cell(i + 1, j - 1);
-            diagRight = new Cell(i + 1, j + 1);
-        } else{ // same checks as above, but for black (color == Constants.Color.BLACK)
-            diagLeft = new Cell(i - 1, j - 1);
-            diagRight = new Cell(i - 1, j + 1);
-        }
-        isCheckPawn(board, diagLeft,color, attackingPieces);
-        isCheckPawn(board, diagRight, color, attackingPieces);
-
-        // Is there an enemy knight that could take the king (8 possible cells)
-        int [][] moveKnight = new int[][]{{2, -1},{2, 1},{1, -2},{1, 2},{-1, 2},{-2, 1},{-2, -1},{-1, -2}};
-        for(int[] move: moveKnight) {
-            Cell knight = new Cell(i + move[0], j + move[1]);
-
-            if(board.isCellValid(knight)) {
-                piece = board.getPiece(knight);
-                if ((piece.getName() == Constants.GamePieceName.KNIGHT) && (piece.getColor() != color)) {
-                    attackingPieces.addLast(knight);
-                }
+            row = color == Constants.Color.WHITE ? 1 : 6;
+            for(int i = 0; i <= 7 ; i++){
+                board.setPiece(new Cell(row,i), new Pawn(color));
             }
         }
-        return attackingPieces;
+
     }
-
-    private void isCheckPawn(Board board, Cell diag, Constants.Color color, LinkedList<Cell> attackingPieces)
-    {
-        GamePiece piece;
-
-        if (board.isCellValid(diag)) {
-            piece = board.getPiece(diag);
-            if ((piece.getName() == Constants.GamePieceName.PAWN) && (piece.getColor() != color)) {
-                attackingPieces.addLast(diag);
-            }
-        }
-    }
-
-    private void isCheckForLinesAndDiag(Board board, Cell pos, Constants.Color color, LinkedList<Cell> attackingPieces,
-                              int[][] moves, boolean isDiag){
-
-        Constants.GamePieceName threat;
-        // Bishop for diagonal, Rook to check for lines
-        threat = (isDiag) ? Constants.GamePieceName.BISHOP : Constants.GamePieceName.ROOK;
-
-        for(int k = 0; k < moves.length; k++){
-            int i = pos.getRow() + moves[k][0];
-            int j = pos.getCol() + moves[k][1];
-
-            while((Math.max(i,j) < board.getColSize()) && (Math.min(i,j) >= 0)){
-                Cell cell = new Cell(i,j);
-                GamePiece piece = board.getPiece(cell);
-
-                if(piece != null) {
-                    if(((piece.getName() == threat) ||
-                            (piece.getName() == Constants.GamePieceName.QUEEN)) &&
-                            (color != piece.getColor())) {
-                        attackingPieces.addLast(cell);
-                        break;
-                    } else break;
-                }
-                i = i + moves[k][0];
-                j = j + moves[k][1];
-            }
-        }
-    }
-
-    //getEvent (check, checkmate...)
 }

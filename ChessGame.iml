@@ -35,5 +35,6 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" name="org.mockito:mockito-junit-jupiter:3.2.4" level="application" />
   </component>
 </module>
