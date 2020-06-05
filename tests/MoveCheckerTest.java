@@ -7,11 +7,16 @@ import org.junit.Test;
 import org.mockito.Mock;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static com.Constants.MakeMoveStatuses.*;
+import static com.Constants.PlayerStatus.*;
+import static com.Constants.GamePieceName.*;
 
 public class MoveCheckerTest {
 
     GamePiece queenW;
+    GamePiece queenB;
     GamePiece bishopB;
+    GamePiece bishopW;
     GamePiece pawnW;
     GamePiece knightB;
     GamePiece kingW;
@@ -26,7 +31,9 @@ public class MoveCheckerTest {
     public void initialize() {
         board = new Board();
         queenW = new Queen(Constants.Color.WHITE);
+        queenB = new Queen(Constants.Color.BLACK);
         bishopB = new Bishop(Constants.Color.BLACK);
+        bishopW = new Bishop(Constants.Color.WHITE);
         pawnW = new Pawn((Constants.Color.WHITE));
         knightB = new Knight(Constants.Color.BLACK);
         kingW = new King(Constants.Color.WHITE);
@@ -37,14 +44,42 @@ public class MoveCheckerTest {
     @Test
     // Is player in check
     public void testIsPlayerInCheck() throws Exception {
-        Cell start = new Cell(4, 4);
-        Cell end = new Cell(5, 5);
-        Cell cellKingW = new Cell(3,2);
-        Cell cellKingB = new Cell(6,4);
-        board.setPiece(start, bishopB);
-        board.setPiece(cellKingW, kingW);
+        Cell cellKingB = new Cell(3,2);
+        Cell cellKingW = new Cell(6,4);
         board.setPiece(cellKingB, kingB);
-        assertTrue(moveChecker.isPlayerInCheck(board, Constants.Color.BLACK, start, end));
+        board.setPiece(cellKingW, kingW);
+
+        assertEquals(Constants.PlayerStatus.NO_STATUS, moveChecker.isPlayerInCheck(board));
+    }
+
+    @Test
+    // test isCheck: Bishop attacks the king
+    public void attackOnTheKingByBishop() throws Exception {
+        Cell cellKingB = new Cell(3,2);
+        Cell cellKingW = new Cell(6,4);
+        Cell cellAttackingPieceW = new Cell(4,3);
+        Cell cellAttackingPieceB = new Cell(2,0);
+
+        //QueenW attack
+        board.setPiece(cellKingB, kingB);
+        board.setPiece(cellKingW, kingW);
+        board.setPiece(cellAttackingPieceW, queenW);
+        assertEquals(BLACK_PLAYER_IN_CHECK, moveChecker.isPlayerInCheck(board));
+
+        //QueenB attack
+        board.setPiece(cellAttackingPieceW, null);
+        board.setPiece(cellAttackingPieceB, queenB);
+        assertEquals(WHITE_PLAYER_IN_CHECK, moveChecker.isPlayerInCheck(board));
+
+        //BishopW attack
+        board.setPiece(cellAttackingPieceB, null);
+        board.setPiece(cellAttackingPieceW, bishopW);
+        assertEquals(BLACK_PLAYER_IN_CHECK, moveChecker.isPlayerInCheck(board));
+
+        //BishopB attack
+        board.setPiece(cellAttackingPieceW, null);
+        board.setPiece(cellAttackingPieceB, bishopB);
+        assertEquals(WHITE_PLAYER_IN_CHECK, moveChecker.isPlayerInCheck(board));
     }
 
 }

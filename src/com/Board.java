@@ -30,6 +30,12 @@ public class Board {
 
         board[boardCell.getRow()][boardCell.getCol()] = piece;
     }
+
+    public void movePiece(Cell start, Cell end, GamePiece piece) {
+        setPiece(end,piece);
+        setPiece(start, null);
+    }
+
     // isEmpty method indicates if a piece is in this given square
     public boolean isEmpty(Cell cell){
         return board[cell.getRow()][cell.getCol()] == null;

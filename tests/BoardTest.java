@@ -135,4 +135,12 @@ public class BoardTest {
     public void testGetColSize() throws Exception {
         assertEquals(8,board.getColSize());
     }
+
+    // TODO: 6/4/2020
+    /*
+        public void movePiece(Cell start, Cell end, GamePiece piece) {
+        setPiece(end,piece);
+        setPiece(start, null);
+    }
+     */
 }

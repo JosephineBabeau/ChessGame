@@ -9,6 +9,7 @@ import org.mockito.Mock;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static com.Constants.MakeMoveStatuses.*;
+import static com.Constants.PlayerStatus.*;
 
 
 public class RuleEngineTest {
@@ -47,7 +48,9 @@ public class RuleEngineTest {
     public void isStartCellValid() throws Exception {
         Cell start = new Cell(8, 4);
         Cell end = new Cell(5, 6);
-        assertEquals(OUT_OF_BOUND, ruleEngine.canPlayerMakeMove(board,start,end,Constants.Color.WHITE));
+
+        MakeMoveResults result = ruleEngine.canPlayerMakeMove(board,start,end,Constants.Color.WHITE);
+        assertEquals(OUT_OF_BOUND, result.getMakeMoveStatuses());
     }
 
     @Test
@@ -55,7 +58,8 @@ public class RuleEngineTest {
     public void isEndCellValid() throws Exception {
         Cell start = new Cell(4, 4);
         Cell end = new Cell(5, -1);
-        assertEquals(OUT_OF_BOUND, ruleEngine.canPlayerMakeMove(board,start,end,Constants.Color.BLACK));
+        MakeMoveResults result = ruleEngine.canPlayerMakeMove(board,start,end,Constants.Color.BLACK);
+        assertEquals(OUT_OF_BOUND, result.getMakeMoveStatuses());
     }
 
     @Test
@@ -64,7 +68,8 @@ public class RuleEngineTest {
     public void boardIsEmpty() throws Exception {
         Cell start = new Cell(4, 4);
         Cell end = new Cell(5, 4);
-        assertEquals(NO_PIECE_SELECTED, ruleEngine.canPlayerMakeMove(board,start,end,Constants.Color.BLACK));
+        MakeMoveResults result = ruleEngine.canPlayerMakeMove(board,start,end,Constants.Color.BLACK);
+        assertEquals(NO_PIECE_SELECTED, result.getMakeMoveStatuses());
     }
 
     @Test
@@ -74,7 +79,9 @@ public class RuleEngineTest {
         Cell start = new Cell(4, 4);
         Cell end = new Cell(7, 4);
         board.setPiece(start, queenW);
-        assertEquals(CANT_MOVE_OPPONENT_PIECE, ruleEngine.canPlayerMakeMove(board,start,end,Constants.Color.BLACK));
+
+        MakeMoveResults result = ruleEngine.canPlayerMakeMove(board,start,end,Constants.Color.BLACK);
+        assertEquals(CANT_MOVE_OPPONENT_PIECE, result.getMakeMoveStatuses());
     }
 
     @Test
@@ -85,7 +92,9 @@ public class RuleEngineTest {
         Cell end = new Cell(6, 4);
         board.setPiece(start, queenW);
         board.setPiece(end,pawnW);
-        assertEquals(CANNOT_ATTACK_OWN_PIECES, ruleEngine.canPlayerMakeMove(board,start,end,Constants.Color.WHITE));
+
+        MakeMoveResults result = ruleEngine.canPlayerMakeMove(board,start,end,Constants.Color.WHITE);
+        assertEquals(CANNOT_ATTACK_OWN_PIECES, result.getMakeMoveStatuses());
     }
 
     @Test
@@ -99,12 +108,14 @@ public class RuleEngineTest {
 
         board.setPiece(start, mockPiece);
         board.setPiece(end,pawnB);
-        assertEquals(UNAUTHORIZED_MOVE,ruleEngine.canPlayerMakeMove(board,start,end,Constants.Color.WHITE));
+
+        MakeMoveResults result = ruleEngine.canPlayerMakeMove(board,start,end,Constants.Color.WHITE);
+        assertEquals(UNAUTHORIZED_MOVE, result.getMakeMoveStatuses());
     }
 
     @Test
     // verifies that the destination cell isn't empty.
-    public void testExecuteMoveEndIsFilled() throws Exception {
+    public void testExecuteMoveWhenEndIsFilled() throws Exception {
         Cell start = new Cell(4, 4);
         Cell end = new Cell(6, 4);
         board.setPiece(end,rookW);
@@ -122,9 +133,10 @@ public class RuleEngineTest {
         board.setPiece(start, mockPiece);
         board.setPiece(end,rookW);
 
-        when(mockMoveCheck.isPlayerInCheck(board,Constants.Color.BLACK,start,end)).thenReturn(false);
-        assertEquals(MOVE_IS_VALID, ruleEngine.canPlayerMakeMove(board,start,end, Constants.Color.BLACK));
+        MakeMoveResults result = ruleEngine.canPlayerMakeMove(board,start,end,Constants.Color.BLACK);
+        assertEquals(MOVE_IS_VALID, result.getMakeMoveStatuses());
     }
+
     @Test
     // verifies if the move is putting the player in check.
     // The player IS in check.
@@ -137,8 +149,10 @@ public class RuleEngineTest {
         board.setPiece(start, mockPiece);
         board.setPiece(end,rookW);
 
-        when(mockMoveCheck.isPlayerInCheck(board,Constants.Color.BLACK,start,end)).thenReturn(true);
-        assertEquals(YOU_ARE_IN_CHECK, ruleEngine.canPlayerMakeMove(board,start,end, Constants.Color.BLACK));
+        when(mockMoveCheck.isPlayerInCheck(board)).thenReturn(BLACK_PLAYER_IN_CHECK);
+
+        MakeMoveResults result = ruleEngine.canPlayerMakeMove(board,start,end,Constants.Color.BLACK);
+        assertEquals(YOU_ARE_IN_CHECK, result.getMakeMoveStatuses());
     }
     @Test
     // verifies if the move is putting the player in check.
@@ -152,9 +166,9 @@ public class RuleEngineTest {
         board.setPiece(start, mockPiece);
         board.setPiece(end,rookW);
 
-        when(mockMoveCheck.isPlayerInCheck(board,Constants.Color.BLACK,start,end)).thenReturn(true);
+        when(mockMoveCheck.isPlayerInCheck(board)).thenReturn(BLACK_PLAYER_IN_CHECK);
         assertEquals(mockPiece, board.getPiece(start));
 
     }
-
+    // setup tests for setPiece
 }

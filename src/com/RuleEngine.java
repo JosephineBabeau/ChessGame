@@ -52,10 +52,9 @@ public class RuleEngine {
             return results;
         }
         //Execute move
-        board.setPiece(end, pieceAtStart);
-        board.setPiece(start, null);
+        board.movePiece(start, end, pieceAtStart);
 
-        Constants.PlayerStatus playerStatus = moveChecker.isPlayerInCheck(board, playerColor);
+        Constants.PlayerStatus playerStatus = moveChecker.isPlayerInCheck(board);
         results.setPlayerStatus(playerStatus);
         //Verify if the move is putting the player in check
         if(((playerStatus == BLACK_PLAYER_IN_CHECK)&&(playerColor == Constants.Color.BLACK))||
@@ -92,6 +91,5 @@ public class RuleEngine {
                 board.setPiece(new Cell(row,i), new Pawn(color));
             }
         }
-
     }
 }

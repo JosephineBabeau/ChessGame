@@ -6,8 +6,7 @@ import static com.Constants.PlayerStatus.*;
 
 public class MoveChecker {
 
-
-    public Constants.PlayerStatus isPlayerInCheck(Board board, Constants.Color playerColor)
+    public Constants.PlayerStatus isPlayerInCheck(final Board board)
     {
         Constants.PlayerStatus status = NO_STATUS;
 
@@ -29,7 +28,7 @@ public class MoveChecker {
 
     // helper function to get position of both kings (to populate cell "pos"). 
     // This will be used to verify if a player is in check.
-    private void getKings(Board board, Cell kingWhite, Cell kingBlack) {
+    private void getKings(final Board board, final Cell kingWhite, final Cell kingBlack) {
         LinkedList<Cell> kingList;
         kingList = board.getPiecesByType(Constants.GamePieceName.KING);
 
@@ -48,7 +47,7 @@ public class MoveChecker {
 
     // This function verifies if the player's King is in check. 
     // The linkedList contains all enemy pieces that can attack the king.
-    private LinkedList<Cell> isCheck(Board board, Cell pos) {
+    private LinkedList<Cell> isCheck(final Board board, final Cell pos) {
         // pos: position of a King on the board
 
         LinkedList<Cell> attackingPieces = new LinkedList<>();
@@ -89,7 +88,9 @@ public class MoveChecker {
 
             if(board.isCellValid(knight)) {
                 piece = board.getPiece(knight);
-                if ((piece.getName() == Constants.GamePieceName.KNIGHT) && (piece.getColor() != color)) {
+                if ((piece != null) &&
+                        (piece.getName() == Constants.GamePieceName.KNIGHT) &&
+                        (piece.getColor() != color)) {
                     attackingPieces.addLast(knight);
                 }
             }
@@ -98,21 +99,30 @@ public class MoveChecker {
     }
     
     // helper function supporting isCheck. Verifies if a pawn could attack the player's King.
-    private void isCheckPawn(Board board, Cell diag, Constants.Color color, LinkedList<Cell> attackingPieces)
+    private void isCheckPawn(final Board board,
+                             final Cell diag,
+                             final Constants.Color color,
+                             LinkedList<Cell> attackingPieces)
     {
         GamePiece piece;
 
         if (board.isCellValid(diag)) {
             piece = board.getPiece(diag);
-            if ((piece.getName() == Constants.GamePieceName.PAWN) && (piece.getColor() != color)) {
+            if ((piece != null) &&
+                    (piece.getName() == Constants.GamePieceName.PAWN) &&
+                    (piece.getColor() != color)) {
                 attackingPieces.addLast(diag);
             }
         }
     }
     // helper function supporting isCheck. Verifies if an enemy piece moving in diagonal,
     // (like Bishops or Queen) could attack the player's King.
-    private void isCheckForLinesAndDiag(Board board, Cell pos, Constants.Color color, LinkedList<Cell> attackingPieces,
-                                        int[][] moves, boolean isDiag){
+    private void isCheckForLinesAndDiag(final Board board,
+                                        final Cell pos,
+                                        final Constants.Color color,
+                                        LinkedList<Cell> attackingPieces,
+                                        final int[][] moves,
+                                        final boolean isDiag){
 
         Constants.GamePieceName threat;
         // Bishop for diagonal, Rook to check for lines
