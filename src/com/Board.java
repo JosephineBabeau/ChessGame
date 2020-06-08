@@ -32,7 +32,7 @@ public class Board {
     }
 
     public void movePiece(Cell start, Cell end, GamePiece piece) {
-        setPiece(end,piece);
+        setPiece(end, piece);
         setPiece(start, null);
     }
 

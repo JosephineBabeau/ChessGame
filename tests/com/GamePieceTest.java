@@ -1,3 +1,5 @@
+package com;
+
 import com.Board;
 import com.Cell;
 import com.Constants;

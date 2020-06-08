@@ -1,3 +1,4 @@
+package com;
 
 import com.Board;
 import com.Cell;
@@ -135,12 +136,16 @@ public class BoardTest {
     public void testGetColSize() throws Exception {
         assertEquals(8,board.getColSize());
     }
+    @Test
+    // Tests method movePiece
+        public void movePiece() throws Exception {
+        Cell start = new Cell(2,4);
+        Cell end = new Cell(4,4);
+        board.setPiece(start,pieceB);
+        board.setPiece(end,pieceB);
+        board.setPiece(start, null);
 
-    // TODO: 6/4/2020
-    /*
-        public void movePiece(Cell start, Cell end, GamePiece piece) {
-        setPiece(end,piece);
-        setPiece(start, null);
+        assertTrue(board.isEmpty(start));
+        assertFalse(board.isEmpty(end));
     }
-     */
 }

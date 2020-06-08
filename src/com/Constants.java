@@ -24,6 +24,7 @@ public class Constants {
         CANNOT_ATTACK_OWN_PIECES,
         YOU_ARE_IN_CHECK,
         MOVE_IS_VALID,
+        NOT_YOUR_TURN_TO_PLAY,
     }
     public enum PlayerStatus {
         BLACK_PLAYER_IN_CHECK,

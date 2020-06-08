@@ -1,3 +1,4 @@
+package com;
 
 import com.*;
 import com.pieces.*;
@@ -44,21 +45,35 @@ public class RuleEngineTest {
         pawnB = new Pawn(Constants.Color.BLACK);
     }
     @Test
+    public void isPlayerOfCorrectColor() {
+        Cell start = new Cell(3, 4);
+        Cell end = new Cell(5, 6);
+        MakeMoveResults result = ruleEngine.canPlayerMakeMove(board,start,end,Constants.Color.WHITE, Constants.Color.WHITE);
+        assertEquals(NOT_YOUR_TURN_TO_PLAY, result.getMakeMoveStatuses());
+    }
+    @Test
+    public void isPlayerOfCorrectColorBlack() {
+        Cell start = new Cell(3, 4);
+        Cell end = new Cell(5, 6);
+        MakeMoveResults result = ruleEngine.canPlayerMakeMove(board,start,end,Constants.Color.BLACK, Constants.Color.BLACK);
+        assertEquals(NOT_YOUR_TURN_TO_PLAY, result.getMakeMoveStatuses());
+    }
+    @Test
     // Is start cell valid
-    public void isStartCellValid() throws Exception {
+    public void isStartCellValid() {
         Cell start = new Cell(8, 4);
         Cell end = new Cell(5, 6);
 
-        MakeMoveResults result = ruleEngine.canPlayerMakeMove(board,start,end,Constants.Color.WHITE);
+        MakeMoveResults result = ruleEngine.canPlayerMakeMove(board,start,end,Constants.Color.WHITE, Constants.Color.BLACK);
         assertEquals(OUT_OF_BOUND, result.getMakeMoveStatuses());
     }
 
     @Test
     // Is end cell valid
-    public void isEndCellValid() throws Exception {
+    public void isEndCellValid() {
         Cell start = new Cell(4, 4);
         Cell end = new Cell(5, -1);
-        MakeMoveResults result = ruleEngine.canPlayerMakeMove(board,start,end,Constants.Color.BLACK);
+        MakeMoveResults result = ruleEngine.canPlayerMakeMove(board,start,end,Constants.Color.BLACK, Constants.Color.WHITE);
         assertEquals(OUT_OF_BOUND, result.getMakeMoveStatuses());
     }
 
@@ -68,7 +83,7 @@ public class RuleEngineTest {
     public void boardIsEmpty() throws Exception {
         Cell start = new Cell(4, 4);
         Cell end = new Cell(5, 4);
-        MakeMoveResults result = ruleEngine.canPlayerMakeMove(board,start,end,Constants.Color.BLACK);
+        MakeMoveResults result = ruleEngine.canPlayerMakeMove(board,start,end,Constants.Color.BLACK, Constants.Color.WHITE);
         assertEquals(NO_PIECE_SELECTED, result.getMakeMoveStatuses());
     }
 
@@ -80,7 +95,7 @@ public class RuleEngineTest {
         Cell end = new Cell(7, 4);
         board.setPiece(start, queenW);
 
-        MakeMoveResults result = ruleEngine.canPlayerMakeMove(board,start,end,Constants.Color.BLACK);
+        MakeMoveResults result = ruleEngine.canPlayerMakeMove(board,start,end,Constants.Color.BLACK, Constants.Color.WHITE);
         assertEquals(CANT_MOVE_OPPONENT_PIECE, result.getMakeMoveStatuses());
     }
 
@@ -93,7 +108,7 @@ public class RuleEngineTest {
         board.setPiece(start, queenW);
         board.setPiece(end,pawnW);
 
-        MakeMoveResults result = ruleEngine.canPlayerMakeMove(board,start,end,Constants.Color.WHITE);
+        MakeMoveResults result = ruleEngine.canPlayerMakeMove(board,start,end,Constants.Color.WHITE, Constants.Color.BLACK);
         assertEquals(CANNOT_ATTACK_OWN_PIECES, result.getMakeMoveStatuses());
     }
 
@@ -103,13 +118,13 @@ public class RuleEngineTest {
         Cell start = new Cell(4, 4);
         Cell end = new Cell(6, 4);
 
-        when(mockPiece.getColor()).thenReturn(Constants.Color.WHITE);
+        when(mockPiece.getColor()).thenReturn(Constants.Color.WHITE, Constants.Color.BLACK);
         when(mockPiece.canMoveToDest(any(),any(),any())).thenReturn(false);
 
         board.setPiece(start, mockPiece);
         board.setPiece(end,pawnB);
 
-        MakeMoveResults result = ruleEngine.canPlayerMakeMove(board,start,end,Constants.Color.WHITE);
+        MakeMoveResults result = ruleEngine.canPlayerMakeMove(board,start,end,Constants.Color.WHITE, Constants.Color.BLACK);
         assertEquals(UNAUTHORIZED_MOVE, result.getMakeMoveStatuses());
     }
 
@@ -133,7 +148,7 @@ public class RuleEngineTest {
         board.setPiece(start, mockPiece);
         board.setPiece(end,rookW);
 
-        MakeMoveResults result = ruleEngine.canPlayerMakeMove(board,start,end,Constants.Color.BLACK);
+        MakeMoveResults result = ruleEngine.canPlayerMakeMove(board,start,end,Constants.Color.BLACK, Constants.Color.WHITE);
         assertEquals(MOVE_IS_VALID, result.getMakeMoveStatuses());
     }
 
@@ -151,7 +166,7 @@ public class RuleEngineTest {
 
         when(mockMoveCheck.isPlayerInCheck(board)).thenReturn(BLACK_PLAYER_IN_CHECK);
 
-        MakeMoveResults result = ruleEngine.canPlayerMakeMove(board,start,end,Constants.Color.BLACK);
+        MakeMoveResults result = ruleEngine.canPlayerMakeMove(board,start,end,Constants.Color.BLACK, Constants.Color.WHITE);
         assertEquals(YOU_ARE_IN_CHECK, result.getMakeMoveStatuses());
     }
     @Test

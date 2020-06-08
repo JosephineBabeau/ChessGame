@@ -12,9 +12,16 @@ public class RuleEngine {
         this.moveChecker = moveChecker;
     }
 
-    public MakeMoveResults canPlayerMakeMove(Board board, Cell start, Cell end, Constants.Color playerColor) {
+    public MakeMoveResults canPlayerMakeMove(Board board, Cell start, Cell end, Constants.Color playerColor,
+                                             Constants.Color lastTurnColor) {
 
         MakeMoveResults results = new MakeMoveResults();
+
+        // validate turn by turn
+        if(lastTurnColor == playerColor) {
+            results.setMakeMoveStatuses(NOT_YOUR_TURN_TO_PLAY);
+            return results;
+        }
 
         // validate if cells are within boundaries of the board
         if(! board.isCellValid(start)) {

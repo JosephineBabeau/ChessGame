@@ -18,33 +18,29 @@ public class Cell {
     public int getRow() {
         return row;
     }
+
     public int getCol() {
         return col;
     }
 
-    public boolean isEqual(Cell cell)
-    {
-        if(cell.getRow() != this.row)
-        {
+    public boolean isEqual(Cell cell) {
+        if (cell.getRow() != this.row) {
             return false;
         }
 
-        if(cell.getCol() != this.col)
-        {
+        if (cell.getCol() != this.col) {
             return false;
         }
 
         return true;
     }
 
-    public void set(int i, int j)
-    {
+    public void set(int i, int j) {
         row = i;
         col = j;
     }
 
-    public void copy(Cell copy)
-    {
+    public void copy(Cell copy) {
         row = copy.getRow();
         col = copy.getCol();
     }
