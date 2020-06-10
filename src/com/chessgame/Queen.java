@@ -1,13 +1,13 @@
-package com.pieces;
+package com.chessgame;
 
-import com.Board;
-import com.Cell;
-import com.GamePiece;
-import com.Constants;
+import com.chessgame.Board;
+import com.chessgame.Cell;
+import com.chessgame.GamePiece;
+import com.chessgame.Constants;
 
 public class Queen extends GamePiece {
-    public Queen(Constants.Color color){
-        super(color, Constants.GamePieceName.QUEEN);
+    public Queen(Constants.Color color, int id){
+        super(color, Constants.GamePieceName.QUEEN, id);
     }
 
     @Override

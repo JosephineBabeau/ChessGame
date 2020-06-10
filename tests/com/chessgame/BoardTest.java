@@ -1,11 +1,5 @@
-package com;
+package com.chessgame;
 
-import com.Board;
-import com.Cell;
-import com.Constants;
-import com.GamePiece;
-import com.pieces.*;
-import junit.extensions.TestSetup;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -22,8 +16,8 @@ public class BoardTest {
     @Before
     public void initialize() {
         board = new Board();
-        pieceW = new Rook(Constants.Color.WHITE);
-        pieceB = new Queen(Constants.Color.BLACK);
+        pieceW = new Rook(Constants.Color.WHITE, 0);
+        pieceB = new Queen(Constants.Color.BLACK, 0);
     }
 
     @Test
@@ -40,17 +34,17 @@ public class BoardTest {
 
         // 3rd piece (king B)
         Cell cellPiece3 = new Cell(1,2);
-        GamePiece piece3 = new King(Constants.Color.BLACK);
+        GamePiece piece3 = new King(Constants.Color.BLACK, 0);
         board.setPiece(cellPiece3,piece3);
 
         // 4th piece (King W)
         Cell cellPiece4 = new Cell(7,7);
-        GamePiece piece4 = new King(Constants.Color.WHITE);
+        GamePiece piece4 = new King(Constants.Color.WHITE, 0);
         board.setPiece(cellPiece4,piece4);
 
         // 5th piece (Pawn W)
         Cell cellPiece5 = new Cell(4,6);
-        GamePiece piece5 = new Pawn(Constants.Color.WHITE);
+        GamePiece piece5 = new Pawn(Constants.Color.WHITE, 0);
         board.setPiece(cellPiece5,piece5);
 
         LinkedList<Cell> resultKing = new LinkedList<>();

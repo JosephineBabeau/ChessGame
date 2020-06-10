@@ -1,17 +1,10 @@
-package com;
-
-import com.*;
-import com.pieces.*;
-import static org.mockito.Mockito.*;
+package com.chessgame;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static com.Constants.MakeMoveStatuses.*;
-import static com.Constants.PlayerStatus.*;
-import static com.Constants.GamePieceName.*;
+import static com.chessgame.Constants.PlayerStatus.*;
 
 public class MoveCheckerTest {
 
@@ -35,19 +28,19 @@ public class MoveCheckerTest {
     @Before
     public void initialize() {
         board = new Board();
-        queenW = new Queen(Constants.Color.WHITE);
-        queenB = new Queen(Constants.Color.BLACK);
-        bishopB = new Bishop(Constants.Color.BLACK);
-        bishopW = new Bishop(Constants.Color.WHITE);
-        pawnW = new Pawn((Constants.Color.WHITE));
-        knightB1 = new Knight(Constants.Color.BLACK);
-        knightB2 = new Knight(Constants.Color.BLACK);
-        knightW1 = new Knight(Constants.Color.WHITE);
-        knightW2 = new Knight(Constants.Color.WHITE);
-        kingW = new King(Constants.Color.WHITE);
-        kingB = new King(Constants.Color.BLACK);
-        rookW = new Rook(Constants.Color.WHITE);
-        pawnB = new Pawn(Constants.Color.BLACK);
+        queenW = new Queen(Constants.Color.WHITE, 0);
+        queenB = new Queen(Constants.Color.BLACK, 0);
+        bishopB = new Bishop(Constants.Color.BLACK, 0);
+        bishopW = new Bishop(Constants.Color.WHITE, 0);
+        pawnW = new Pawn((Constants.Color.WHITE), 0);
+        knightB1 = new Knight(Constants.Color.BLACK, 0);
+        knightB2 = new Knight(Constants.Color.BLACK, 0);
+        knightW1 = new Knight(Constants.Color.WHITE, 0);
+        knightW2 = new Knight(Constants.Color.WHITE, 0);
+        kingW = new King(Constants.Color.WHITE, 0);
+        kingB = new King(Constants.Color.BLACK, 0);
+        rookW = new Rook(Constants.Color.WHITE, 0);
+        pawnB = new Pawn(Constants.Color.BLACK, 0);
     }
     @Test
     // Is player in check

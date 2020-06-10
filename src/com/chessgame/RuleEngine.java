@@ -1,9 +1,8 @@
-package com;
+package com.chessgame;
 
 
-import com.pieces.*;
-import static com.Constants.MakeMoveStatuses.*;
-import static com.Constants.PlayerStatus.*;
+import static com.chessgame.Constants.MakeMoveStatuses.*;
+import static com.chessgame.Constants.PlayerStatus.*;
 
 public class RuleEngine {
     public MoveChecker moveChecker;
@@ -12,7 +11,7 @@ public class RuleEngine {
         this.moveChecker = moveChecker;
     }
 
-    public MakeMoveResults canPlayerMakeMove(Board board, Cell start, Cell end, Constants.Color playerColor,
+    protected MakeMoveResults canPlayerMakeMove(Board board, Cell start, Cell end, Constants.Color playerColor,
                                              Constants.Color lastTurnColor) {
 
         MakeMoveResults results = new MakeMoveResults();
@@ -46,11 +45,14 @@ public class RuleEngine {
             return results;
         }
         // a player can't attack its own pieces.
-        // Piece at end destination should not be of the same color
+        // Piece at end destination should not be of the same color.
+        // A player can however move a piece to an empty cell.
         GamePiece pieceAtEnd = board.getPiece(end);
-        if(pieceAtEnd.getColor() == playerColor)  {
-            results.setMakeMoveStatuses(CANNOT_ATTACK_OWN_PIECES);
-            return results;
+        if(!board.isEmpty(end)) {
+            if(pieceAtEnd.getColor() == playerColor)  {
+                results.setMakeMoveStatuses(CANNOT_ATTACK_OWN_PIECES);
+                return results;
+            }
         }
 
         // check authorized move for the chess piece in the start cell
@@ -68,7 +70,7 @@ public class RuleEngine {
                 ((playerStatus == WHITE_PLAYER_IN_CHECK)&&(playerColor == Constants.Color.WHITE)))
         {
             //if the move sets the player in check, perform a backtrack
-            board.setPiece(end, pieceAtEnd);
+            if(pieceAtEnd != null) board.setPiece(end, pieceAtEnd);
             board.setPiece(start, pieceAtStart);
             results.setMakeMoveStatuses(YOU_ARE_IN_CHECK);
             return results;
@@ -76,26 +78,27 @@ public class RuleEngine {
         results.setMakeMoveStatuses(MOVE_IS_VALID);
         return results;
     }
-    public void setUpBoard(Board board) {
+    protected void setUpBoard(Board board) {
 
         Constants.Color[] piecesColor = new Constants.Color[2];
         piecesColor[0] = Constants.Color.WHITE;
         piecesColor[1] = Constants.Color.BLACK;
+        int id = 0;
 
         for(Constants.Color color : piecesColor) {
             int row = color == Constants.Color.WHITE ? 0 : 7;
-            board.setPiece(new Cell(row,0), new Rook(color));
-            board.setPiece(new Cell(row,1), new Knight(color));
-            board.setPiece(new Cell(row,2), new Bishop(color));
-            board.setPiece(new Cell(row,3), new Queen(color));
-            board.setPiece(new Cell(row,4), new King(color));
-            board.setPiece(new Cell(row,5), new Bishop(color));
-            board.setPiece(new Cell(row,6), new Knight(color));
-            board.setPiece(new Cell(row,7), new Rook(color));
+            board.setPiece(new Cell(row,0), new Rook(color, id++));
+            board.setPiece(new Cell(row,1), new Knight(color, id++));
+            board.setPiece(new Cell(row,2), new Bishop(color, id++));
+            board.setPiece(new Cell(row,3), new Queen(color, id++));
+            board.setPiece(new Cell(row,4), new King(color, id++));
+            board.setPiece(new Cell(row,5), new Bishop(color, id++));
+            board.setPiece(new Cell(row,6), new Knight(color, id++));
+            board.setPiece(new Cell(row,7), new Rook(color, id++));
 
             row = color == Constants.Color.WHITE ? 1 : 6;
             for(int i = 0; i <= 7 ; i++){
-                board.setPiece(new Cell(row,i), new Pawn(color));
+                board.setPiece(new Cell(row,i), new Pawn(color, id++));
             }
         }
     }

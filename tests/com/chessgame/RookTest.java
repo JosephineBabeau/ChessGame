@@ -1,9 +1,5 @@
-package com.pieces;
-import com.Board;
-import com.Cell;
-import com.Constants;
-import com.GamePiece;
-import junit.extensions.TestSetup;
+package com.chessgame;
+import com.chessgame.*;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -18,8 +14,8 @@ public class RookTest {
     @Before
     public void initialize() {
         board = new Board();
-        pieceW = new Rook(Constants.Color.WHITE);
-        pieceB = new Rook((Constants.Color.BLACK));
+        pieceW = new Rook(Constants.Color.WHITE, 0);
+        pieceB = new Rook(Constants.Color.BLACK, 0);
     }
 
     @Test

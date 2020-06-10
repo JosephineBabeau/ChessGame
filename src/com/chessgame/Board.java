@@ -1,4 +1,4 @@
-package com;
+package com.chessgame;
 
 import java.util.LinkedList;
 

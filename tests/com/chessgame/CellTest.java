@@ -1,12 +1,6 @@
-package com;
+package com.chessgame;
 
-import com.Board;
-import com.Cell;
-import com.Constants;
-import com.GamePiece;
-import com.pieces.*;
-import junit.extensions.TestSetup;
-import org.junit.Before;
+import com.chessgame.Cell;
 import org.junit.Test;
 
 

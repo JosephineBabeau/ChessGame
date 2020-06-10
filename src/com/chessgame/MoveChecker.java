@@ -1,8 +1,7 @@
-package com;
-import com.RuleEngine;
+package com.chessgame;
 import java.util.LinkedList;
 
-import static com.Constants.PlayerStatus.*;
+import static com.chessgame.Constants.PlayerStatus.*;
 
 public class MoveChecker {
 

@@ -1,13 +1,13 @@
-package com.pieces;
+package com.chessgame;
 
-import com.Board;
-import com.Cell;
-import com.GamePiece;
-import com.Constants;
+import com.chessgame.Board;
+import com.chessgame.Cell;
+import com.chessgame.GamePiece;
+import com.chessgame.Constants;
 
 public class Bishop extends GamePiece{
-    public Bishop(Constants.Color color){
-        super(color, Constants.GamePieceName.BISHOP);
+    public Bishop(Constants.Color color, int id){
+        super(color, Constants.GamePieceName.BISHOP, id);
     }
 
     @Override

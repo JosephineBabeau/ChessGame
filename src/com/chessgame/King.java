@@ -1,15 +1,15 @@
-package com.pieces;
+package com.chessgame;
 
-import com.Board;
-import com.Cell;
-import com.GamePiece;
-import com.Constants;
+import com.chessgame.Board;
+import com.chessgame.Cell;
+import com.chessgame.GamePiece;
+import com.chessgame.Constants;
 
 public class King extends GamePiece {
     // Initialize color() as well as its name
 
-    public King(Constants.Color color){
-        super(color, Constants.GamePieceName.KING);
+    public King(Constants.Color color, int id){
+        super(color, Constants.GamePieceName.KING, id);
     }
 
     @Override

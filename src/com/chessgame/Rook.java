@@ -1,14 +1,14 @@
-package com.pieces;
+package com.chessgame;
 
-import com.Board;
-import com.Cell;
-import com.GamePiece;
-import com.Constants;
+import com.chessgame.Board;
+import com.chessgame.Cell;
+import com.chessgame.GamePiece;
+import com.chessgame.Constants;
 
 public class Rook extends GamePiece {
 
-    public Rook(Constants.Color color){
-        super(color, Constants.GamePieceName.ROOK);
+    public Rook(Constants.Color color, int id){
+        super(color, Constants.GamePieceName.ROOK, id);
     }
 
     @Override

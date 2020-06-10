@@ -1,11 +1,5 @@
-package com;
+package com.chessgame;
 
-import com.Board;
-import com.Cell;
-import com.Constants;
-import com.GamePiece;
-import com.pieces.*;
-import junit.extensions.TestSetup;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -20,8 +14,8 @@ public class GamePieceTest {
     @Before
     public void initialize() {
         board = new Board();
-        pieceW = new Queen(Constants.Color.WHITE);
-        pieceB = new Queen((Constants.Color.BLACK));
+        pieceW = new Queen(Constants.Color.WHITE, 0);
+        pieceB = new Queen(Constants.Color.BLACK, 0);
     }
 
     @Test

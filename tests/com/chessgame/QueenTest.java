@@ -1,10 +1,6 @@
-package com.pieces;
+package com.chessgame;
 
-import com.Board;
-import com.Cell;
-import com.Constants;
-import com.GamePiece;
-import junit.extensions.TestSetup;
+import com.chessgame.*;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -18,8 +14,8 @@ public class QueenTest {
     @Before
     public void initialize() {
         board = new Board();
-        pieceW = new Queen(Constants.Color.WHITE);
-        pieceB = new Queen((Constants.Color.BLACK));
+        pieceW = new Queen(Constants.Color.WHITE, 0);
+        pieceB = new Queen(Constants.Color.BLACK, 0);
     }
     @Test
     // I.  The first part ensures that a queen can move in straight line (same tests as for the rook)

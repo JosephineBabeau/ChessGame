@@ -1,17 +1,14 @@
-package com;
+package com.chessgame;
 
-import com.*;
-import com.pieces.*;
-import static org.mockito.Mockito.*;
+import com.chessgame.Constants;
+import com.chessgame.MakeMoveResults;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static com.Constants.MakeMoveStatuses.*;
-import static com.Constants.PlayerStatus.*;
-import static com.Constants.GamePieceName.*;
+import static com.chessgame.Constants.MakeMoveStatuses.*;
+import static com.chessgame.Constants.PlayerStatus.*;
 
 public class MakeMoveResultsTest {
 

@@ -1,6 +1,4 @@
-package com;
-
-import static com.Constants.PlayerStatus.*;
+package com.chessgame;
 
 public class GameMaster {
 
@@ -21,7 +19,7 @@ public class GameMaster {
         return playerStatus;
     }
 
-    GameMaster(Board board, RuleEngine ruleEngine) {
+    public GameMaster(Board board, RuleEngine ruleEngine) {
         this.board = board;
         this.ruleEngine = ruleEngine;
     }
@@ -47,9 +45,7 @@ public class GameMaster {
     }
 
 
+    // fin de partie? to do fonction surrender
 
-    // fin de partie?
-
-    // unit test globaux (des situations de jeux)
 
 }

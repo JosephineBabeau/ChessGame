@@ -1,4 +1,4 @@
-package com;
+package com.chessgame;
 
 public class Cell {
     private int row;
@@ -35,7 +35,7 @@ public class Cell {
         return true;
     }
 
-    public void set(int i, int j) {
+    protected void set(int i, int j) {
         row = i;
         col = j;
     }

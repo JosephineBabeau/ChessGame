@@ -1,9 +1,5 @@
-package com.pieces;
-import com.Board;
-import com.Cell;
-import com.Constants;
-import com.GamePiece;
-import junit.extensions.TestSetup;
+package com.chessgame;
+import com.chessgame.*;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -18,8 +14,8 @@ public class PawnTest {
     @Before
     public void initialize2SquareFromStart() {
         board = new Board();
-        pieceW = new Pawn(Constants.Color.WHITE);
-        pieceB = new Pawn((Constants.Color.BLACK));
+        pieceW = new Pawn(Constants.Color.WHITE, 0);
+        pieceB = new Pawn(Constants.Color.BLACK, 0);
     }
 
     @Test

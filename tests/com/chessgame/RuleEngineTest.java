@@ -1,7 +1,7 @@
-package com;
+package com.chessgame;
 
-import com.*;
-import com.pieces.*;
+import static com.chessgame.Constants.GamePieceName.*;
+import static com.chessgame.Constants.GamePieceName.PAWN;
 import static org.mockito.Mockito.*;
 
 import org.junit.Before;
@@ -9,8 +9,8 @@ import org.junit.Test;
 import org.mockito.Mock;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static com.Constants.MakeMoveStatuses.*;
-import static com.Constants.PlayerStatus.*;
+import static com.chessgame.Constants.MakeMoveStatuses.*;
+import static com.chessgame.Constants.PlayerStatus.*;
 
 
 public class RuleEngineTest {
@@ -35,15 +35,25 @@ public class RuleEngineTest {
     @Before
     public void initialize() {
         board = new Board();
-        queenW = new Queen(Constants.Color.WHITE);
-        bishopB = new Bishop(Constants.Color.BLACK);
-        pawnW = new Pawn((Constants.Color.WHITE));
-        knightB = new Knight(Constants.Color.BLACK);
-        kingW = new King(Constants.Color.WHITE);
-        kingB = new King(Constants.Color.BLACK);
-        rookW = new Rook(Constants.Color.WHITE);
-        pawnB = new Pawn(Constants.Color.BLACK);
+        queenW = new Queen(Constants.Color.WHITE, 0);
+        bishopB = new Bishop(Constants.Color.BLACK, 0);
+        pawnW = new Pawn(Constants.Color.WHITE, 0);
+        knightB = new Knight(Constants.Color.BLACK, 0);
+        kingW = new King(Constants.Color.WHITE, 0);
+        kingB = new King(Constants.Color.BLACK, 0);
+        rookW = new Rook(Constants.Color.WHITE, 0);
+        pawnB = new Pawn(Constants.Color.BLACK, 0);
     }
+
+    @Test
+    public void movePieceToEmptyCell() {
+        Cell start = new Cell(0,0);
+        Cell end = new Cell (5,0);
+        board.setPiece(start, rookW);
+        MakeMoveResults result = ruleEngine.canPlayerMakeMove(board,start,end,Constants.Color.WHITE, Constants.Color.BLACK);
+        assertEquals(MOVE_IS_VALID, result.getMakeMoveStatuses());
+    }
+
     @Test
     public void isPlayerOfCorrectColor() {
         Cell start = new Cell(3, 4);
@@ -183,7 +193,28 @@ public class RuleEngineTest {
 
         when(mockMoveCheck.isPlayerInCheck(board)).thenReturn(BLACK_PLAYER_IN_CHECK);
         assertEquals(mockPiece, board.getPiece(start));
-
     }
-    // setup tests for setPiece
+
+    @Test
+    public void boardSetUpWhite() throws Exception {
+        Constants.GamePieceName pieces[] =
+                new Constants.GamePieceName[]{ROOK, KNIGHT, BISHOP, QUEEN, KING, BISHOP, KNIGHT, ROOK};
+        ruleEngine.setUpBoard(board);
+
+        for(int i = 0; i < pieces.length; i++) {
+            assertEquals(pieces[i], board.getPiece(new Cell(0, i)).getName());
+            assertEquals(PAWN, board.getPiece(new Cell(1, i)).getName());
+        }
+    }
+    @Test
+    public void boardSetUpBlack() throws Exception {
+        Constants.GamePieceName pieces[] =
+                new Constants.GamePieceName[]{ROOK, KNIGHT, BISHOP, QUEEN, KING, BISHOP, KNIGHT, ROOK};
+        ruleEngine.setUpBoard(board);
+
+        for (int i = 0; i < pieces.length; i++) {
+            assertEquals(pieces[i], board.getPiece(new Cell(7, i)).getName());
+            assertEquals(PAWN, board.getPiece(new Cell(6, i)).getName());
+        }
+    }
 }

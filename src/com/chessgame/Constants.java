@@ -1,4 +1,4 @@
-package com;
+package com.chessgame;
 
 public class Constants {
 
