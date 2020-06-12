@@ -22,8 +22,6 @@ public class Rook extends GamePiece {
 
         // Rook can only move in straight line
         if(Math.abs(i - r) == 0) return true;
-        if(Math.abs(j - c) == 0) return true;
-
-        return false;
+        return Math.abs(j - c) == 0;
     }
 }

@@ -29,9 +29,6 @@ public class Queen extends GamePiece {
             return true;
         }
 
-        if(Math.abs(j - c) == 0){
-            return true;
-        }
-        return false;
+        return Math.abs(j - c) == 0;
     }
 }

@@ -5,7 +5,7 @@ import static com.chessgame.Constants.MakeMoveStatuses.*;
 import static com.chessgame.Constants.PlayerStatus.*;
 
 public class RuleEngine {
-    public MoveChecker moveChecker;
+    final public MoveChecker moveChecker;
 
     public RuleEngine(MoveChecker moveChecker) {
         this.moveChecker = moveChecker;

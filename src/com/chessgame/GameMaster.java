@@ -2,8 +2,8 @@ package com.chessgame;
 
 public class GameMaster {
 
-    RuleEngine ruleEngine;
-    Board board;
+    final RuleEngine ruleEngine;
+    final Board board;
 
     Constants.GameStatuses gameStatuses;
     Constants.PlayerStatus playerStatus;
@@ -43,9 +43,4 @@ public class GameMaster {
 
         return status;
     }
-
-
-    // fin de partie? to do fonction surrender
-
-
 }

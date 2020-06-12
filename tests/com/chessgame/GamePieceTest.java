@@ -14,7 +14,7 @@ public class GamePieceTest {
     @Before
     public void initialize() {
         board = new Board();
-        pieceW = new Queen(Constants.Color.WHITE, 0);
+        pieceW = new Queen(Constants.Color.WHITE, 5);
         pieceB = new Queen(Constants.Color.BLACK, 0);
     }
 
@@ -41,6 +41,11 @@ public class GamePieceTest {
     public void testGetColorWhiteFalse() throws Exception {
 
         assertNotEquals(Constants.Color.BLACK, pieceW.getColor());
+    }
+    @Test
+    // test getID
+    public void testGetId() {
+        assertEquals(5,pieceW.getId());
     }
 
 }

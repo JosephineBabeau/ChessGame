@@ -197,7 +197,7 @@ public class RuleEngineTest {
 
     @Test
     public void boardSetUpWhite() throws Exception {
-        Constants.GamePieceName pieces[] =
+        Constants.GamePieceName[] pieces =
                 new Constants.GamePieceName[]{ROOK, KNIGHT, BISHOP, QUEEN, KING, BISHOP, KNIGHT, ROOK};
         ruleEngine.setUpBoard(board);
 
@@ -208,7 +208,7 @@ public class RuleEngineTest {
     }
     @Test
     public void boardSetUpBlack() throws Exception {
-        Constants.GamePieceName pieces[] =
+        Constants.GamePieceName[] pieces =
                 new Constants.GamePieceName[]{ROOK, KNIGHT, BISHOP, QUEEN, KING, BISHOP, KNIGHT, ROOK};
         ruleEngine.setUpBoard(board);
 

@@ -31,17 +31,17 @@ public class MoveChecker {
         LinkedList<Cell> kingList;
         kingList = board.getPiecesByType(Constants.GamePieceName.KING);
 
-        Cell tmpkingWhite = kingList.removeFirst();
-        Cell tmpkingBlack = kingList.removeFirst();
+        Cell tmpKingWhite = kingList.removeFirst();
+        Cell tmpKingBlack = kingList.removeFirst();
 
-        if(board.getPiece(tmpkingBlack).getColor() == Constants.Color.WHITE){
-            Cell temp = tmpkingWhite;
-            tmpkingWhite = tmpkingBlack;
-            tmpkingBlack = temp;
+        if(board.getPiece(tmpKingBlack).getColor() == Constants.Color.WHITE){
+            Cell temp = tmpKingWhite;
+            tmpKingWhite = tmpKingBlack;
+            tmpKingBlack = temp;
         }
 
-        kingWhite.copy(tmpkingWhite);
-        kingBlack.copy(tmpkingBlack);
+        kingWhite.copy(tmpKingWhite);
+        kingBlack.copy(tmpKingBlack);
     }
 
     // This function verifies if the player's King is in check. 
@@ -53,13 +53,13 @@ public class MoveChecker {
         Constants.Color color = board.getPiece(pos).getColor();
 
         // Verify diagonals for enemy pieces
-        int[][] moveDiag = new int[][]{{1,1},{-1,1},{1,-1},{-1,-1}};
+        int[][] moveDiagonal = new int[][]{{1,1},{-1,1},{1,-1},{-1,-1}};
         int[][] moveLine = new int[][]{{0,1},{0,-1},{1,0},{-1,0}};
 
-        // 'isCheckForLinesAndDiag' verifies is there are any threats on lines and/or diagonals,
+        // 'isCheckForLinesAndDiagonals' verifies is there are any threats on lines and/or diagonals,
         // that could attack the king (i.e. is the king in check).
-        isCheckForLinesAndDiag(board, pos, color, attackingPieces, moveDiag, true);
-        isCheckForLinesAndDiag(board, pos, color, attackingPieces, moveLine, false);
+        isCheckForLinesAndDiagonal(board, pos, color, attackingPieces, moveDiagonal, true);
+        isCheckForLinesAndDiagonal(board, pos, color, attackingPieces, moveLine, false);
 
         // Verify diagonals for pawn
         int i = pos.getRow();
@@ -68,17 +68,17 @@ public class MoveChecker {
         GamePiece piece;
 
         // Verify if diagonal move is permitted for a pawn
-        Cell diagLeft;
-        Cell diagRight;
+        Cell diagonalLeft;
+        Cell diagonalRight;
         if(color == Constants.Color.WHITE) {
-            diagLeft = new Cell(i + 1, j - 1);
-            diagRight = new Cell(i + 1, j + 1);
+            diagonalLeft = new Cell(i + 1, j - 1);
+            diagonalRight = new Cell(i + 1, j + 1);
         } else{ // same checks as above, but for black (color == Constants.Color.BLACK)
-            diagLeft = new Cell(i - 1, j - 1);
-            diagRight = new Cell(i - 1, j + 1);
+            diagonalLeft = new Cell(i - 1, j - 1);
+            diagonalRight = new Cell(i - 1, j + 1);
         }
-        isCheckPawn(board, diagLeft,color, attackingPieces);
-        isCheckPawn(board, diagRight, color, attackingPieces);
+        isCheckPawn(board, diagonalLeft,color, attackingPieces);
+        isCheckPawn(board, diagonalRight, color, attackingPieces);
 
         // Is there an enemy knight that could take the king (8 possible cells)
         int [][] moveKnight = new int[][]{{2, -1},{2, 1},{1, -2},{1, 2},{-1, 2},{-2, 1},{-2, -1},{-1, -2}};
@@ -99,52 +99,52 @@ public class MoveChecker {
     
     // helper function supporting isCheck. Verifies if a pawn could attack the player's King.
     private void isCheckPawn(final Board board,
-                             final Cell diag,
+                             final Cell diagonal,
                              final Constants.Color color,
                              LinkedList<Cell> attackingPieces)
     {
         GamePiece piece;
 
-        if (board.isCellValid(diag)) {
-            piece = board.getPiece(diag);
+        if (board.isCellValid(diagonal)) {
+            piece = board.getPiece(diagonal);
             if ((piece != null) &&
                     (piece.getName() == Constants.GamePieceName.PAWN) &&
                     (piece.getColor() != color)) {
-                attackingPieces.addLast(diag);
+                attackingPieces.addLast(diagonal);
             }
         }
     }
     // helper function supporting isCheck. Verifies if an enemy piece moving in diagonal,
     // (like Bishops or Queen) could attack the player's King.
-    private void isCheckForLinesAndDiag(final Board board,
-                                        final Cell pos,
-                                        final Constants.Color color,
-                                        LinkedList<Cell> attackingPieces,
-                                        final int[][] moves,
-                                        final boolean isDiag){
+    private void isCheckForLinesAndDiagonal(final Board board,
+                                            final Cell pos,
+                                            final Constants.Color color,
+                                            LinkedList<Cell> attackingPieces,
+                                            final int[][] moves,
+                                            final boolean isDiagonal){
 
         Constants.GamePieceName threat;
         // Bishop for diagonal, Rook to check for lines
-        threat = (isDiag) ? Constants.GamePieceName.BISHOP : Constants.GamePieceName.ROOK;
+        threat = (isDiagonal) ? Constants.GamePieceName.BISHOP : Constants.GamePieceName.ROOK;
 
-        for(int k = 0; k < moves.length; k++){
-            int i = pos.getRow() + moves[k][0];
-            int j = pos.getCol() + moves[k][1];
+        for (int[] move : moves) {
+            int i = pos.getRow() + move[0];
+            int j = pos.getCol() + move[1];
 
-            while((Math.max(i,j) < board.getColSize()) && (Math.min(i,j) >= 0)){
-                Cell cell = new Cell(i,j);
+            while ((Math.max(i, j) < board.getColSize()) && (Math.min(i, j) >= 0)) {
+                Cell cell = new Cell(i, j);
                 GamePiece piece = board.getPiece(cell);
 
-                if(piece != null) {
-                    if(((piece.getName() == threat) ||
+                if (piece != null) {
+                    if (((piece.getName() == threat) ||
                             (piece.getName() == Constants.GamePieceName.QUEEN)) &&
                             (color != piece.getColor())) {
                         attackingPieces.addLast(cell);
-                        break;
-                    } else break;
+                    }
+                    break;
                 }
-                i = i + moves[k][0];
-                j = j + moves[k][1];
+                i = i + move[0];
+                j = j + move[1];
             }
         }
     }

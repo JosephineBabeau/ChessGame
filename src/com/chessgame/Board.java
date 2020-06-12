@@ -3,7 +3,7 @@ package com.chessgame;
 import java.util.LinkedList;
 
 public class Board {
-    GamePiece[][] board = new GamePiece[8][8];
+    final GamePiece[][] board = new GamePiece[8][8];
 
     // Helper function: provides location of a given type of piece(s)
     public LinkedList<Cell> getPiecesByType(Constants.GamePieceName name) {
@@ -46,9 +46,7 @@ public class Board {
         if(cell.getRow() < 0) return false;
         if(cell.getRow() >= board.length) return false;
         if(cell.getCol() < 0) return false;
-        if(cell.getCol() >= board[0].length) return false;
-
-        return true;
+        return cell.getCol() < board[0].length;
     }
 
     public int getRowSize() {

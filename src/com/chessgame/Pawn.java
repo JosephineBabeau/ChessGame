@@ -30,16 +30,15 @@ public class Pawn extends GamePiece {
             if((c == j) && (r == i + 1)) return true;
             if((c == j) && (r == i + 2) && (start.getRow() == 1)) return true;
             if((c == j + 1) && (r == i + 1) && (board.getPiece(end).getColor() != super.getColor())) return true;
-            if((c == j - 1) && (r == i + 1) && (board.getPiece(end).getColor() != super.getColor())) return true;
+            return (c == j - 1) && (r == i + 1) && (board.getPiece(end).getColor() != super.getColor());
 
         } else {
             if((c == j) && (r == i - 1)) return true;
             if((c == j) && (r == i - 2) && (start.getRow() == 6)) return true;
             if((c == j + 1) && (r == i - 1) && (board.getPiece(end).getColor() != super.getColor())) return true;
-            if((c == j - 1) && (r == i - 1) && (board.getPiece(end).getColor() != super.getColor())) return true;
+            return (c == j - 1) && (r == i - 1) && (board.getPiece(end).getColor() != super.getColor());
         }
 
-        return false;
     }
 
 

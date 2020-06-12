@@ -28,11 +28,7 @@ public class Cell {
             return false;
         }
 
-        if (cell.getCol() != this.col) {
-            return false;
-        }
-
-        return true;
+        return cell.getCol() == this.col;
     }
 
     protected void set(int i, int j) {

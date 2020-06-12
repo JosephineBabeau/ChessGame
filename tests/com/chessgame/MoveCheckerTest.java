@@ -23,7 +23,7 @@ public class MoveCheckerTest {
     GamePiece pawnB;
     Board board;
 
-    MoveChecker moveChecker = new MoveChecker();
+    final MoveChecker moveChecker = new MoveChecker();
 
     @Before
     public void initialize() {
